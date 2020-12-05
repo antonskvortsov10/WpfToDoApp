@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfToDoApp"
         mc:Ignorable="d"
-        Title="ToDoApp" Height="450" Width="800">
+        Title="ToDoApp" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <DataGrid x:Name="ToDoList" FontSize="16" FontWeight="Bold" Margin="10">
+        <DataGrid x:Name="ToDoList" FontSize="16" FontWeight="Bold" Margin="10" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn IsReadOnly="True" Header="CreationDate" Width="180" />
-                <DataGridCheckBoxColumn IsReadOnly="False" Header="Done" Width="80" />
-                <DataGridTextColumn IsReadOnly="False" Header="ToDo" Width="*" />
+                <DataGridTextColumn Binding="{Binding Path=CreationDate}" IsReadOnly="True" Header="CreationDate" Width="180" />
+                <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Done" Width="80" />
+                <DataGridTextColumn Binding="{Binding Path=Text}" IsReadOnly="False" Header="ToDo" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
