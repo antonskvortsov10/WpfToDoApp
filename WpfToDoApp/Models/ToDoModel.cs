@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 
 namespace WpfToDoApp.Models
 {
     class ToDoModel : INotifyPropertyChanged
     {
-        public DateTime CreationDate { get; set; } = DateTime.Now;
-
         private bool _isDone;
         private string _text;
 
+        [JsonProperty(PropertyName = "creationDate")]
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        [JsonProperty(PropertyName = "isDone")]
         public bool IsDone
         {
             get { return _isDone; }
@@ -21,7 +24,8 @@ namespace WpfToDoApp.Models
                 OnPropertyChanged("IsDone");
             }
         }
-        
+
+        [JsonProperty(PropertyName = "text")]
         public string Text
         {
             get { return _text; }
