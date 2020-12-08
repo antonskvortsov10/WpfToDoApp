@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfToDoApp.Models;
+using WpfToDoApp.Services;
 
 namespace WpfToDoApp
 {
@@ -22,7 +23,9 @@ namespace WpfToDoApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string PATH = $"{Environment.CurrentDirectory}\\toDoDataList.json";  // файл лежит рядом с exe-файлом
         private BindingList<ToDoModel> _toDoDataList;
+        private FileIOService _fileIOService;
 
         public MainWindow()
         {
@@ -31,12 +34,25 @@ namespace WpfToDoApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _toDoDataList = new BindingList<ToDoModel>()
+            _fileIOService = new FileIOService(PATH);
+
+            try
             {
-                new ToDoModel() { Text = "test" },
-                new ToDoModel() { Text = "some string" },
-                new ToDoModel() { Text = "task 3", IsDone = true }
-            };
+                _toDoDataList = _fileIOService.LoadData();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+                Close();
+            }
+
+            //_toDoDataList = new BindingList<ToDoModel>()
+            //{
+            //    new ToDoModel() { Text = "test" },
+            //    new ToDoModel() { Text = "some string" },
+            //    new ToDoModel() { Text = "task 3", IsDone = true }
+            //};
 
             ToDoList.ItemsSource = _toDoDataList;
 
@@ -49,7 +65,16 @@ namespace WpfToDoApp
                 e.ListChangedType == ListChangedType.ItemDeleted ||
                 e.ListChangedType == ListChangedType.ItemChanged)
             {
+                try
+                {
+                    _fileIOService.SaveData(sender);
+                }
+                catch (Exception ex)
+                {
 
+                    MessageBox.Show(ex.Message);
+                    Close();
+                }
             }
 
             //switch (e.ListChangedType)
